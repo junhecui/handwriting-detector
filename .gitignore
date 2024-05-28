@@ -1,0 +1,5 @@
+# Ignore specific directories containing images
+/processed_characters/
+/segmented_characters/
+/cleaned_characters/
+/augmented_characters/
