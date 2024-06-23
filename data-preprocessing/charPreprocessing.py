@@ -43,7 +43,7 @@ def segment_characters(binary_image, output_dir, min_area=50):
         char_index += 1
 
 image_path = './images/characters-4-9.jpg'
-processed_image_path = './processed_characters/processed_characters-4-9.jpg'
+processed_image_path = './processed/processed_characters/processed_characters-4-9.jpg'
 output_dir = './temp/segmented_characters'
 os.makedirs(output_dir, exist_ok=True)
 
