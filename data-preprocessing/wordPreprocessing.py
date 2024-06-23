@@ -54,8 +54,8 @@ def segment_words(binary_image, output_dir, min_area=100):
         cv2.imwrite(word_image_path, word_image)
         word_index += 1
 
-image_path = './images/words-happy-great-smart-small-elephant-beautiful-excellent-wonderful.jpg'
-processed_image_path = './processed_words/words-happy-great-smart-small-elephant-beautiful-excellent-wonderful.jpg'
+image_path = './images/words-wonderful-universe-fantastic-computer-keyboard-language-question.jpg'
+processed_image_path = './processed_words/words-wonderful-universe-fantastic-computer-keyboard-language-question.jpg'
 output_dir = './temp/segmented_words'
 os.makedirs(output_dir, exist_ok=True)
 

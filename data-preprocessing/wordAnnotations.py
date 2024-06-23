@@ -44,16 +44,12 @@ def generate_annotations(base_dir):
                 if image_file.endswith('.png'):
                     image_path = os.path.join(label_path, image_file)
                     xml_path = os.path.join(label_path, os.path.splitext(image_file)[0] + '.xml')
-                    
-                    if 'lower' in label_dir:
-                        label = label_dir[0]
-                    else:
-                        label = label_dir
+                    label = label_dir
                     
                     if not os.path.exists(xml_path):
                         create_xml_annotation(image_path, label, label_path)
                     else:
                         print(f"Skipping {xml_path}, already exists.")
 
-base_dir = 'segmented_characters'
+base_dir = './segmented/segmented_words'
 generate_annotations(base_dir)
