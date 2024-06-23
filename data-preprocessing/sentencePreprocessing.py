@@ -5,20 +5,13 @@ import numpy as np
 def preprocess_image(image_path, output_path):
     image = cv2.imread(image_path)
     
-    if image is None:
-        print(f"Error: Unable to load image at {image_path}")
-        return None
-    
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
-    # Apply Gaussian blur to reduce noise
     blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
     
-    # Apply adaptive thresholding with adjusted parameters
     binary_image = cv2.adaptiveThreshold(blurred_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
                                          cv2.THRESH_BINARY_INV, 15, 4)
     
-    # Perform morphological operations to connect letters within words
     kernel = np.ones((3, 3), np.uint8)
     binary_image = cv2.morphologyEx(binary_image, cv2.MORPH_CLOSE, kernel, iterations=1)
     binary_image = cv2.morphologyEx(binary_image, cv2.MORPH_OPEN, kernel, iterations=1)
@@ -29,22 +22,24 @@ def preprocess_image(image_path, output_path):
     return binary_image
 
 def segment_sentences(binary_image, output_dir, min_area=1000):
-    # Dilate image to connect letters into words
-    kernel = np.ones((5, 5), np.uint8)
-    dilated_image = cv2.dilate(binary_image, kernel, iterations=1)
-
-    contours, _ = cv2.findContours(dilated_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    horizontal_projection = np.sum(binary_image, axis=1)
     
+    threshold = np.mean(horizontal_projection) * 0.5
+    line_positions = np.where(horizontal_projection > threshold)[0]
+
+    line_boundaries = []
+    start = line_positions[0]
+    for i in range(1, len(line_positions)):
+        if line_positions[i] != line_positions[i - 1] + 1:
+            end = line_positions[i - 1]
+            line_boundaries.append((start, end))
+            start = line_positions[i]
+    line_boundaries.append((start, line_positions[-1]))
+
     sentence_index = 0
-    for contour in contours:
-        x, y, w, h = cv2.boundingRect(contour)
-        area = cv2.contourArea(contour)
-        
-        if area < min_area:
-            continue
-        
-        sentence_image = binary_image[y:y+h, x:x+w]
-        padded_sentence_image = pad_image(sentence_image, h, w)  # Pad to a common size while preserving aspect ratio
+    for start, end in line_boundaries:
+        sentence_image = binary_image[start:end, :]
+        padded_sentence_image = pad_image(sentence_image, sentence_image.shape[0], binary_image.shape[1])
         
         sentence_image_path = os.path.join(output_dir, f'sentence_{sentence_index}.png')
         cv2.imwrite(sentence_image_path, padded_sentence_image)
