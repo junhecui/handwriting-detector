@@ -55,7 +55,7 @@ def segment_words(binary_image, output_dir, min_area=100):
         word_index += 1
 
 image_path = './images/words-wonderful-universe-fantastic-computer-keyboard-language-question.jpg'
-processed_image_path = './processed_words/words-wonderful-universe-fantastic-computer-keyboard-language-question.jpg'
+processed_image_path = './processed/processed_words/words-wonderful-universe-fantastic-computer-keyboard-language-question.jpg'
 output_dir = './temp/segmented_words'
 os.makedirs(output_dir, exist_ok=True)
 
