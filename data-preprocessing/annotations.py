@@ -45,9 +45,13 @@ def generate_annotations(base_dir):
                     image_path = os.path.join(label_path, image_file)
                     xml_path = os.path.join(label_path, os.path.splitext(image_file)[0] + '.xml')
                     
-                    # Check if the XML file already exists
+                    if 'lower' in label_dir:
+                        label = label_dir[0]
+                    else:
+                        label = label_dir
+                    
                     if not os.path.exists(xml_path):
-                        create_xml_annotation(image_path, label_dir, label_path)
+                        create_xml_annotation(image_path, label, label_path)
                     else:
                         print(f"Skipping {xml_path}, already exists.")
 
