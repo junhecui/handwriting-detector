@@ -21,8 +21,8 @@ def preprocess_image(image_path, output_path):
     
     return binary_image
 
-image_path = './images/sentence-box.jpg'
-processed_image_path = './processed/processed_sentences/sentence-box.jpg'
+image_path = './images/sentence-frog.jpg'
+processed_image_path = './processed/processed_sentences/sentence-frog.jpg'
 os.makedirs(os.path.dirname(processed_image_path), exist_ok=True)
 
 binary_image = preprocess_image(image_path, processed_image_path)
