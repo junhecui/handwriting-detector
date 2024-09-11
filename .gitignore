@@ -2,3 +2,4 @@
 /processed_words/
 temp
 __pycache__
+character_recognition_model.pth
